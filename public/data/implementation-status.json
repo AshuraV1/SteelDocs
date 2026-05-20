@@ -469,9 +469,7 @@
     },
     "TallGrassBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive."
-      ],
+      "todos": [],
       "entries": [
         "short_grass",
         "fern"
@@ -515,18 +513,14 @@
     },
     "SeagrassBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive and get_fluid_state."
-      ],
+      "todos": [],
       "entries": [
         "seagrass"
       ]
     },
     "TallSeagrassBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive and get_fluid_state."
-      ],
+      "todos": [],
       "entries": [
         "tall_seagrass"
       ]
@@ -547,9 +541,7 @@
     },
     "FlowerBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive."
-      ],
+      "todos": [],
       "entries": [
         "dandelion",
         "golden_dandelion",
@@ -753,9 +745,7 @@
     },
     "CropBlock": {
       "implemented": true,
-      "todos": [
-        "Check light level >= 9 when light engine is implemented"
-      ],
+      "todos": [],
       "entries": [
         "wheat"
       ]
@@ -1006,9 +996,7 @@
     },
     "SugarCaneBlock": {
       "implemented": true,
-      "todos": [
-        "Implement age growth and shape updates that break the cane."
-      ],
+      "todos": [],
       "entries": [
         "sugar_cane"
       ]
@@ -1375,7 +1363,7 @@
       ]
     },
     "NetherWartBlock": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "nether_wart"
@@ -1535,14 +1523,14 @@
       ]
     },
     "CarrotBlock": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "carrots"
       ]
     },
     "PotatoBlock": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "potatoes"
@@ -1737,9 +1725,7 @@
     },
     "TallFlowerBlock": {
       "implemented": true,
-      "todos": [
-        "Implement bonemeal and the rest of vanilla behavior."
-      ],
+      "todos": [],
       "entries": [
         "sunflower",
         "lilac",
@@ -1749,9 +1735,7 @@
     },
     "DoublePlantBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive."
-      ],
+      "todos": [],
       "entries": [
         "tall_grass",
         "large_fern",
@@ -1828,21 +1812,21 @@
       ]
     },
     "TorchflowerCropBlock": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "torchflower_crop"
       ]
     },
     "PitcherCropBlock": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "pitcher_crop"
       ]
     },
     "BeetrootBlock": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "beetroots"
@@ -2108,7 +2092,7 @@
       ]
     },
     "BambooSaplingBlock": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "bamboo_sapling"
@@ -2116,9 +2100,7 @@
     },
     "BambooStalkBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive."
-      ],
+      "todos": [],
       "entries": [
         "bamboo"
       ]
@@ -2244,7 +2226,7 @@
     "SweetBerryBushBlock": {
       "implemented": true,
       "todos": [
-        "Implement growth, harvesting, entity effects, and the rest of vanilla behavior."
+        "make stuck in block"
       ],
       "entries": [
         "sweet_berry_bush"
@@ -2280,9 +2262,7 @@
     },
     "NetherSproutsBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive."
-      ],
+      "todos": [],
       "entries": [
         "nether_sprouts"
       ]
@@ -2724,9 +2704,7 @@
     },
     "AzaleaBlock": {
       "implemented": true,
-      "todos": [
-        "Implement full vanilla behavior beyond can_survive."
-      ],
+      "todos": [],
       "entries": [
         "azalea",
         "flowering_azalea"
@@ -4450,8 +4428,11 @@
       ]
     },
     "BoneMealItem": {
-      "implemented": false,
-      "todos": [],
+      "implemented": true,
+      "todos": [
+        "implement coral and underwater bonemeal tag selection.",
+        "particles"
+      ],
       "entries": [
         "bone_meal"
       ]
