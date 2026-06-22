@@ -992,9 +992,7 @@
     },
     "CactusBlock": {
       "implemented": true,
-      "todos": [
-        "Implement when pathfinding is supported"
-      ],
+      "todos": [],
       "entries": [
         "cactus"
       ]
@@ -4229,8 +4227,10 @@
       ]
     },
     "FoodOnAStickItem": {
-      "implemented": false,
-      "todos": [],
+      "implemented": true,
+      "todos": [
+        "Award Stats.ITEM_USED once the stat foundation exists."
+      ],
       "entries": [
         "carrot_on_a_stick",
         "warped_fungus_on_a_stick"
@@ -4705,7 +4705,7 @@
       ]
     },
     "MaceItem": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "mace"
