@@ -39,21 +39,28 @@ var olderVersions = versions.slice(1);
                 <a
                   href={build.download}
                   download={build.name}
-                  class="flex-1 px-6 py-3 font-minecraft font-bold rounded-[50px] text-sm bg-teal-600 text-white dark:bg-white dark:text-teal-950 hover:bg-teal-700 dark:hover:bg-gray-100 hover:-translate-y-px transition-all duration-200 ease-out text-center shadow-lg hover:shadow-xl"
+                  class="flex-1 px-6 py-3 font-minecraft font-bold rounded-[50px] text-sm bg-teal-600 text-white dark:bg-white dark:text-teal-950 hover:bg-teal-700 dark:hover:bg-gray-100 hover:-translate-y-px transition-all duration-200 ease-out flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                 >
+                  <svg class="size-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
                   {platform}
                 </a>
               );
             })}
           </div>
           
-          <!-- Release badge -->
-          <div class="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold mt-2">
-            <svg class="size-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-            {Astro.locals.t("latestRelease")}
-          </div>
+          <!-- Release date badge -->
+          {latestVersion.released_at && (
+            <div class="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold mt-2">
+              <svg class="size-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Released {new Date(latestVersion.released_at).toLocaleDateString(Astro.currentLocale ?? "en", { year: "numeric", month: "long", day: "numeric" })}
+            </div>
+          )}
         </div>
       </div>
     )}
@@ -84,11 +91,8 @@ var olderVersions = versions.slice(1);
         </div>
 
         <ul class="flex flex-col gap-4">
-          {olderVersions.map((version, i) => (
-            <li
-              class="p-5 rounded-2xl backdrop-blur-md bg-white/60 dark:bg-teal-950/40 border border-teal-200/40 dark:border-white/5 shadow-md flex items-center justify-between gap-4 older-version-card"
-              style={`animation-delay: ${i * 80}ms; opacity: 0; animation-fill-mode: forwards;`}
-            >
+          {olderVersions.map((version) => (
+            <li class="p-5 rounded-2xl backdrop-blur-md bg-white/60 dark:bg-teal-950/40 border border-teal-200/40 dark:border-white/5 shadow-md flex items-center justify-between gap-4">
               <div class="flex flex-col justify-center">
                 <h3 class="text-xl font-bold text-teal-950 dark:text-white">
                   Version {version.steel_version}
@@ -104,8 +108,13 @@ var olderVersions = versions.slice(1);
                     <a
                       href={build.download}
                       download={build.name}
-                      class="px-4 py-1.5 font-minecraft font-bold rounded-[50px] text-xs bg-black/5 border border-black/10 text-black/80 dark:bg-white/5 dark:border-white/10 dark:text-white/85 cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 hover:-translate-y-px transition-all duration-200 ease-out text-center"
+                      class="px-4 py-1.5 font-minecraft font-bold rounded-[50px] text-xs bg-black/5 border border-black/10 text-black/80 dark:bg-white/5 dark:border-white/10 dark:text-white/85 cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 hover:-translate-y-px transition-all duration-200 ease-out flex items-center gap-1.5"
                     >
+                      <svg class="size-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                      </svg>
                       {platform}
                     </a>
                   );
@@ -131,14 +140,10 @@ var olderVersions = versions.slice(1);
       toggleSection.classList.add("hidden");
     }
 
-    // Reveal older versions — wrapper slides up, each card staggers via CSS delay
+    // Reveal older versions with the global fade-in-up animation
     if (olderVersionsSection) {
       olderVersionsSection.style.display = "block";
       olderVersionsSection.classList.add("animate-fade-in-up");
-      // Trigger staggered card animations
-      olderVersionsSection.querySelectorAll(".older-version-card").forEach((card) => {
-        card.classList.add("animate-fade-in-up");
-      });
     }
   });
 </script>
