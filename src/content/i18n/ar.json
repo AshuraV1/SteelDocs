@@ -10,5 +10,7 @@
     "latestVersion": "الإصدار الأخير",
     "needOlderVersion": "هل تحتاج إلى إصدار أقدم؟",
     "viewPreviousVersions": "عرض الإصدارات السابقة",
-    "olderVersions": "الإصدارات السابقة"
+    "olderVersions": "الإصدارات السابقة",
+    "tracker": "المتتبع",
+    "trackerLabel": "متتبع حالة التنفيذ"
 }

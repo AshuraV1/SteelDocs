@@ -19,6 +19,8 @@ export const collections = {
         needOlderVersion: z.string().optional(),
         viewPreviousVersions: z.string().optional(),
         olderVersions: z.string().optional(),
+        tracker: z.string().optional(),
+        trackerLabel: z.string().optional(),
       }),
   }) }),
 };

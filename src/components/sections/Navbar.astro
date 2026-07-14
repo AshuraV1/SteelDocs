@@ -76,7 +76,7 @@ const supportedLocales = toCodes(i18n!.locales);
       <a
         href={getRelativeLocaleUrl(Astro.currentLocale || "en", "/download")}
         class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-sm text-teal-600 dark:text-white/60 hover:text-teal-950 dark:hover:text-white hover:bg-teal-100 dark:hover:bg-white/10 transition-all"
-        aria-label="Implementation tracker"
+        aria-label={Astro.locals.t("download")}
       >
         <Download class="size-3.5 shrink-0" />
         <span class="hidden font-minecraft sm:inline"
@@ -87,10 +87,12 @@ const supportedLocales = toCodes(i18n!.locales);
       <a
         href={getRelativeLocaleUrl(Astro.currentLocale || "en", "/tracker")}
         class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-sm text-teal-600 dark:text-white/60 hover:text-teal-950 dark:hover:text-white hover:bg-teal-100 dark:hover:bg-white/10 transition-all"
-        aria-label="Implementation tracker"
+        aria-label={Astro.locals.t("trackerLabel")}
       >
         <ChartNoAxesCombined class="size-3.5 shrink-0" />
-        <span class="hidden font-minecraft sm:inline">Tracker</span>
+        <span class="hidden font-minecraft sm:inline"
+          >{Astro.locals.t("tracker")}</span
+        >
       </a>
 
       <!-- Language Switcher -->
