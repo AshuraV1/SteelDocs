@@ -2,8 +2,8 @@
   "meta": {
     "source": "nightly",
     "steel_version": "0.15.2+mc26.2",
-    "steel_commit": "cab59d37b1b63d36ab016abb9bf48f52077be21d",
-    "steel_committed_at": "2026-08-25T21:30:36+02:00"
+    "steel_commit": "d51b2bdb7a6086e8123005ab1bfafefff12e7355",
+    "steel_committed_at": "2026-08-26T21:28:38+02:00"
   },
   "blocks": {
     "GrassBlock": {
@@ -1980,8 +1980,10 @@
       ]
     },
     "BellBlock": {
-      "implemented": false,
-      "todos": [],
+      "implemented": true,
+      "todos": [
+        "Notify villagers when the villager AI is fully implemented."
+      ],
       "entries": [
         "bell"
       ]
@@ -3867,7 +3869,7 @@
       ]
     },
     "SolidBucketItem": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "powder_snow_bucket"
@@ -3894,7 +3896,7 @@
       ]
     },
     "EggItem": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "egg",
@@ -4578,7 +4580,7 @@
       ]
     },
     "Chicken": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "chicken"
@@ -4655,7 +4657,7 @@
       ]
     },
     "ThrownEgg": {
-      "implemented": false,
+      "implemented": true,
       "todos": [],
       "entries": [
         "egg"

@@ -9,11 +9,12 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* BlockFont by Filou: https://github.com/filsin/blockfont */
 @font-face {
   font-family: "Minecraft";
   src:
-    local("Minecraft Regular"),
-    url("/fonts/1_MinecraftRegular1.woff") format("woff");
+    url("/fonts/latin/BlockFont-Regular.woff") format("woff"),
+    url("/fonts/latin/BlockFont-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
@@ -21,8 +22,8 @@
 @font-face {
   font-family: "Minecraft";
   src:
-    local("Minecraft Italic"),
-    url("/fonts/2_MinecraftItalic1.woff") format("woff");
+    url("/fonts/latin/BlockFont-Italic.woff") format("woff"),
+    url("/fonts/latin/BlockFont-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
 }
@@ -30,8 +31,8 @@
 @font-face {
   font-family: "Minecraft";
   src:
-    local("Minecraft Bold"),
-    url("/fonts/3_MinecraftBold1.woff") format("woff");
+    url("/fonts/latin/BlockFont-Bold.woff") format("woff"),
+    url("/fonts/latin/BlockFont-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
@@ -39,8 +40,8 @@
 @font-face {
   font-family: "Minecraft";
   src:
-    local("Minecraft Bold Italic"),
-    url("/fonts/4_MinecraftBoldItalic1.woff") format("woff");
+    url("/fonts/latin/BlockFont-BoldItalic.woff") format("woff"),
+    url("/fonts/latin/BlockFont-BoldItalic.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
 }
@@ -286,6 +287,7 @@ main {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
