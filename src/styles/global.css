@@ -341,8 +341,18 @@ main {
 
 /* Material hierarchy: navigation is glass, content is forged, actions are enamel.
    Radius scale: 10px controls, 16px navigation/inputs, 24px feature panels. */
+.surface-smoked {
+  background-color: rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: rgb(45 212 191 / 0.3);
+  box-shadow: 0 16px 36px rgb(0 0 0 / 0.08);
+}
+
 .dark .surface-smoked {
-  background-color: rgb(2 44 34 / 0.86);
+  background-color: rgb(2 44 34 / 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-color: rgb(94 234 212 / 0.18);
   box-shadow: 0 16px 36px rgb(0 0 0 / 0.28), inset 0 1px 0 rgb(255 255 255 / 0.07);
 }
