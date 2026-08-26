@@ -18,6 +18,13 @@ function t(key: string): string {return tBase(Astro, key)}
 
 const versions = await getVersions();
 const [latestVersion, ...olderVersions] = versions;
+const latestReleaseDate = latestVersion
+  ? new Intl.DateTimeFormat(Astro.currentLocale || "en", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }).format(new Date(latestVersion.released_at))
+  : null;
 const installationUrl = getRelativeLocaleUrl(
   Astro.currentLocale || "en",
   "/getting-started/installation",
@@ -55,7 +62,6 @@ function browseOlderLabel(count: number) {
   title={`SteelMC - ${t("download")}`}
   description={t("download.metaDescription")}
 >
-  <Navbar />
   <main class="relative z-10 mx-auto w-full max-w-300 px-4 pb-20 pt-28 sm:px-6 lg:pt-32">
     <header class="mx-auto mb-10 max-w-210 text-center md:mb-14">
       <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700 dark:text-emerald-300">
@@ -73,30 +79,34 @@ function browseOlderLabel(count: number) {
     {
       latestVersion ? (
         <>
-          <section aria-labelledby="latest-release" class="relative overflow-hidden rounded-4xl border border-emerald-500/25 bg-white/85 shadow-2xl shadow-teal-950/10 backdrop-blur-xl dark:border-emerald-400/20 dark:bg-teal-950/80 dark:shadow-black/25">
-            <div class="pointer-events-none absolute -right-24 -top-32 size-90 rounded-full bg-emerald-400/15 blur-3xl" aria-hidden="true" />
-            <div class="pointer-events-none absolute -bottom-40 -left-20 size-80 rounded-full bg-teal-400/10 blur-3xl" aria-hidden="true" />
-
-            <div class="relative grid gap-8 p-6 sm:p-9 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.8fr)] lg:items-center lg:gap-14 lg:p-12">
+          <section aria-labelledby="latest-release" class="surface-forged overflow-hidden rounded-3xl border border-emerald-500/25 bg-white/85 shadow-xl shadow-teal-950/8 backdrop-blur-md dark:border-emerald-400/20 dark:bg-teal-950/80 dark:shadow-black/20">
+            <div class="grid gap-8 p-6 sm:p-9 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.8fr)] lg:items-center lg:gap-14 lg:p-12">
               <div>
-                <div class="mb-5 flex flex-wrap items-center gap-3">
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-emerald-500/20">
-                    <Check class="size-3.5" stroke-width={3} />
-                    {t("download.latestBadge")}
-                  </span>
-                  <span class="text-sm text-teal-600 dark:text-white/45">
-                    {t("download.forMinecraft")} {latestVersion.mc_version}
-                  </span>
-                </div>
                 <h2 id="latest-release" class="font-minecraft text-4xl font-bold text-teal-950 dark:text-white sm:text-5xl lg:text-6xl">
                   Steel {latestVersion.steel_version}
                 </h2>
+                <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-teal-600 dark:text-white/45">
+                  <span class="inline-flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-400">
+                    <Check class="size-3.5" stroke-width={3} />
+                    {t("download.latestBadge")}
+                  </span>
+                  <span aria-hidden="true" class="text-teal-300 dark:text-white/20">•</span>
+                  <span>{t("download.forMinecraft")} {latestVersion.mc_version}</span>
+                  {latestReleaseDate && (
+                    <>
+                      <span aria-hidden="true" class="text-teal-300 dark:text-white/20">•</span>
+                      <time datetime={latestVersion.released_at}>
+                        {t("download.releasedDate")} {latestReleaseDate}
+                      </time>
+                    </>
+                  )}
+                </div>
                 <p class="mt-4 max-w-145 text-base leading-relaxed text-teal-700 dark:text-white/60 md:text-lg">
                   {t("download.latestDescription")}
                 </p>
               </div>
 
-              <div class="rounded-3xl border border-teal-200/60 bg-teal-50/80 p-4 dark:border-white/10 dark:bg-black/15 sm:p-5">
+              <div class="rounded-3xl border border-teal-200/60 bg-teal-50/80 p-4 dark:border-white/10 dark:bg-black/20 sm:p-5">
                 <p class="mb-3 px-1 text-xs font-semibold uppercase tracking-[0.15em] text-teal-600 dark:text-white/45">
                   {t("download.choosePlatform")}
                 </p>
@@ -105,7 +115,7 @@ function browseOlderLabel(count: number) {
                     <a
                       href={build.download}
                       download={build.name}
-                      class="group flex min-h-14 items-center justify-between gap-4 rounded-2xl border border-teal-200/70 bg-white px-4 py-3 text-teal-950 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/50 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-white/10 dark:bg-white/6 dark:text-white dark:hover:border-emerald-400/40 dark:hover:bg-white/10 sm:px-5"
+                      class="group flex min-h-14 items-center justify-between gap-4 rounded-2xl border border-teal-200/70 bg-white px-4 py-3 text-teal-950 transition-colors duration-150 hover:border-emerald-500/50 hover:bg-emerald-50/45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-white/10 dark:bg-white/6 dark:text-white dark:hover:border-emerald-400/40 dark:hover:bg-white/10 sm:px-5"
                     >
                       <span>
                         <span class="block font-minecraft text-base font-bold sm:text-lg">
@@ -115,7 +125,7 @@ function browseOlderLabel(count: number) {
                           {build.name}
                         </span>
                       </span>
-                      <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-500 text-white transition-transform group-hover:scale-105 dark:bg-emerald-400 dark:text-teal-950">
+                      <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-500 text-white transition-colors group-hover:bg-emerald-600 dark:bg-emerald-400 dark:text-teal-950 dark:group-hover:bg-emerald-300">
                         <ArrowDownToLine class="size-5" />
                       </span>
                     </a>
@@ -139,7 +149,7 @@ function browseOlderLabel(count: number) {
 
           {olderVersions.length > 0 && (
             <section class="mt-7" aria-labelledby="release-archive">
-              <details class="group overflow-hidden rounded-3xl border border-teal-200/60 bg-white/70 shadow-xl shadow-teal-950/5 backdrop-blur-lg dark:border-white/10 dark:bg-teal-950/60">
+              <details class="surface-forged group overflow-hidden rounded-3xl border border-teal-200/60 bg-white/70 shadow-xl shadow-teal-950/5 backdrop-blur-lg dark:border-white/10 dark:bg-teal-950/60">
                 <summary class="flex cursor-pointer list-none items-center gap-4 px-5 py-5 transition-colors hover:bg-white/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-emerald-500 dark:hover:bg-white/5 sm:px-7 sm:py-6 [&::-webkit-details-marker]:hidden">
                   <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-teal-100 text-teal-700 dark:bg-white/10 dark:text-white/70">
                     <Clock3 class="size-5" />
@@ -186,7 +196,7 @@ function browseOlderLabel(count: number) {
           )}
         </>
       ) : (
-        <section class="rounded-3xl border border-teal-200/60 bg-white/80 px-6 py-16 text-center backdrop-blur-xl dark:border-white/10 dark:bg-teal-950/70">
+        <section class="surface-forged rounded-3xl border border-teal-200/60 bg-white/80 px-6 py-16 text-center backdrop-blur-xl dark:border-white/10 dark:bg-teal-950/70">
           <PackageOpen class="mx-auto size-10 text-teal-500 dark:text-white/40" />
           <h2 class="mt-4 font-minecraft text-2xl font-bold text-teal-950 dark:text-white">
             {t("download.noReleases.title")}

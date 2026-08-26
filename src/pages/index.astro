@@ -1,6 +1,5 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/sections/Navbar.astro";
 import Hero from "@/components/sections/Hero.astro";
 import ChooseDocs from "@/components/sections/ChooseDocs.astro";
 import Community from "@/components/sections/Community.astro";
@@ -13,42 +12,41 @@ function t(key: string): string {return tBase(Astro, key)}
   title="SteelMC"
   description={t("index.subtitle")}
 >
-  <Navbar />
-  <Hero
-    pillText={t("index.pillText")}
-    heroTitle="Steel"
-    heroTitleHighlight="MC"
-    subtitle={t("index.subtitle")}
-    mainCtaText={t("index.mainCtaText")}
-    secondCtaText={t("index.secondCtaText")}
-  />
-  <main
-    class="container mx-4 w-auto lg:mx-auto max-w-280 px-4 mt-16 lg:-mt-12 text-white relative z-10"
-  >
-    <ChooseDocs
-      sectionLabel={t("index.chooseDocs.label")}
-      sectionTitle={t("index.chooseDocs.title")}
-      sectionDescription={t("index.chooseDocs.description")}
-      adminHref="./getting-started/installation/"
-      adminImage="/admin.png"
-      adminImageAlt={t("index.chooseDocs.adminImageAlt")}
-      adminLabel={t("index.chooseDocs.adminLabel")}
-      devHref="./development/start-contributing/"
-      devImage="/contributor.png"
-      devImageAlt={t("index.chooseDocs.devImageAlt")}
-      devLabel={t("index.chooseDocs.devLabel")}
+  <main class="relative z-10">
+    <Hero
+      pillText={t("index.pillText")}
+      heroTitle="Steel"
+      heroTitleHighlight="MC"
+      subtitle={t("index.subtitle")}
+      mainCtaText={t("index.mainCtaText")}
+      secondCtaText={t("index.secondCtaText")}
     />
-    <Community
-      heading={t("index.community.heading")}
-      headingHighlight={t("index.community.headingHighlight")}
-      descriptionBold1={t("index.community.descriptionBold1")}
-      descriptionMiddle={t("index.community.descriptionMiddle")}
-      descriptionBold2={t("index.community.descriptionBold2")}
-      descriptionAfter={t("index.community.descriptionAfter")}
-    />
-    <FooterStatus
-      prefix={t("index.rotatingPrefix")}
-      rotatingTexts={tArr(Astro, "index.rotating")}
-    />
+    <div class="container mx-4 mt-16 w-auto max-w-280 px-4 text-white lg:mx-auto lg:-mt-12">
+      <ChooseDocs
+        sectionLabel={t("index.chooseDocs.label")}
+        sectionTitle={t("index.chooseDocs.title")}
+        sectionDescription={t("index.chooseDocs.description")}
+        adminHref="./getting-started/installation/"
+        adminImage="/admin.png"
+        adminImageAlt={t("index.chooseDocs.adminImageAlt")}
+        adminLabel={t("index.chooseDocs.adminLabel")}
+        devHref="./development/start-contributing/"
+        devImage="/contributor.png"
+        devImageAlt={t("index.chooseDocs.devImageAlt")}
+        devLabel={t("index.chooseDocs.devLabel")}
+      />
+      <Community
+        heading={t("index.community.heading")}
+        headingHighlight={t("index.community.headingHighlight")}
+        descriptionBold1={t("index.community.descriptionBold1")}
+        descriptionMiddle={t("index.community.descriptionMiddle")}
+        descriptionBold2={t("index.community.descriptionBold2")}
+        descriptionAfter={t("index.community.descriptionAfter")}
+      />
+      <FooterStatus
+        prefix={t("index.rotatingPrefix")}
+        rotatingTexts={tArr(Astro, "index.rotating")}
+      />
+    </div>
   </main>
 </Layout>

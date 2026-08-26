@@ -25,9 +25,13 @@ function t(key: string): string {return tBase(Astro, key)}
 const { showLanguageSwitcher = true } = Astro.props;
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 px-2 pt-2 max-w-280 mx-auto">
+<header
+  class="fixed top-0 left-0 right-0 z-50 px-2 pt-2 max-w-280 mx-auto"
+  transition:persist="main-navbar"
+  data-navbar-persist
+>
   <nav
-    class="flex items-center gap-3 px-4 py-2.5 rounded-2xl backdrop-blur-md bg-white/80 dark:bg-teal-950/70 border border-teal-200/60 dark:border-white/10 shadow-xl"
+    class="surface-smoked flex items-center gap-3 px-4 py-2.5 rounded-2xl backdrop-blur-md bg-white/80 dark:bg-teal-950/70 border border-teal-200/60 dark:border-white/10 shadow-xl"
   >
     <!-- Logo -->
     <a
@@ -62,12 +66,12 @@ const { showLanguageSwitcher = true } = Astro.props;
         type="search"
         placeholder={t("header.searchPlaceholder")}
         autocomplete="off"
-        class="w-full pl-8 pr-3 py-1.5 text-sm bg-teal-100 dark:bg-white/8 border border-teal-300 dark:border-white/15 rounded-full text-teal-950 dark:text-white placeholder:text-teal-400 dark:placeholder:text-white/35 focus:outline-none focus:border-emerald-500/60 dark:focus:border-emerald-400/50 transition-all"
+        class="w-full pl-8 pr-3 py-1.5 text-sm bg-teal-100 dark:bg-white/8 border border-teal-300 dark:border-white/15 rounded-2xl text-teal-950 dark:text-white placeholder:text-teal-400 dark:placeholder:text-white/35 focus:outline-none focus:border-emerald-500/60 dark:focus:border-emerald-400/50 transition-all"
       />
       <!-- Results dropdown -->
       <div
         id="search-results"
-        class="absolute top-full left-0 right-0 mt-1.5 rounded-xl bg-white dark:bg-teal-900/95 backdrop-blur-md border border-teal-200 dark:border-white/10 shadow-2xl hidden overflow-hidden"
+        class="surface-smoked absolute top-full left-0 right-0 mt-1.5 rounded-2xl bg-white dark:bg-teal-900/95 backdrop-blur-md border border-teal-200 dark:border-white/10 shadow-2xl hidden overflow-hidden"
         role="listbox"
       >
         <div id="search-results-list"></div>
@@ -143,7 +147,7 @@ const { showLanguageSwitcher = true } = Astro.props;
             <div
               id="lang-menu"
               role="menu"
-              class="absolute right-0 top-full mt-1.5 w-36 rounded-xl bg-white dark:bg-teal-900/95 backdrop-blur-md border border-teal-200 dark:border-white/10 shadow-2xl hidden"
+              class="lang-menu surface-smoked absolute right-0 top-full mt-1.5 w-36 rounded-xl bg-white dark:bg-teal-900/95 backdrop-blur-md border border-teal-200 dark:border-white/10 shadow-2xl"
             >
               {
                 supportedLocales.map((locale, i) => {
@@ -167,7 +171,7 @@ const { showLanguageSwitcher = true } = Astro.props;
                     >
                       <span aria-hidden="true">
                         {Astro.locals.t("langFlag", "🇬🇧", { lng: locale })}
-                      </span>{" "}
+                      </span>
                       {Astro.locals.t("langName", "English", { lng: locale })}
                     </a>
                   );
@@ -226,24 +230,29 @@ const { showLanguageSwitcher = true } = Astro.props;
 </header>
 
 <script>
+  function initNavbar() {
+  const navbar = document.querySelector<HTMLElement>("[data-navbar-persist]");
+  if (!navbar || navbar.dataset.initialized === "true") return;
+  navbar.dataset.initialized = "true";
+
   // --- Language dropdown ---
   const langBtn = document.getElementById("lang-btn");
   const langMenu = document.getElementById("lang-menu");
   const langChevron = document.getElementById("lang-chevron");
 
   function closeLang() {
-    langMenu?.classList.add("hidden");
+    langMenu?.classList.remove("is-open");
     langChevron?.classList.remove("rotate-180");
     langBtn?.setAttribute("aria-expanded", "false");
   }
 
   langBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
-    const isOpen = !langMenu?.classList.contains("hidden");
+    const isOpen = langMenu?.classList.contains("is-open");
     if (isOpen) {
       closeLang();
     } else {
-      langMenu?.classList.remove("hidden");
+      langMenu?.classList.add("is-open");
       langChevron?.classList.add("rotate-180");
       langBtn?.setAttribute("aria-expanded", "true");
     }
@@ -394,9 +403,38 @@ const { showLanguageSwitcher = true } = Astro.props;
       closeResults();
     }
   });
+  }
+
+  initNavbar();
+  document.addEventListener("astro:page-load", initNavbar);
 </script>
 
 <style>
+  .lang-menu {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-0.5rem) scale(0.96);
+    transform-origin: top right;
+    transition: opacity 160ms ease, transform 240ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 240ms;
+  }
+
+  .lang-menu.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition-delay: 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lang-menu,
+    .lang-menu.is-open {
+      transition: none;
+      transform: none;
+    }
+  }
+
   #search-results mark {
     background: transparent;
     color: rgb(52 211 153); /* emerald-400 */
