@@ -22,12 +22,31 @@ import { t as tBase } from "@/lib/utils";
 function t(key: string): string {return tBase(Astro, key)}
 
 const { showLanguageSwitcher = true } = Astro.props;
+const navbarCopy = Object.fromEntries(
+  supportedLocales.map((locale) => [
+    locale,
+    {
+      code: locale.toUpperCase(),
+      search: Astro.locals.t("header.searchPlaceholder", { lng: locale }),
+      language: Astro.locals.t("languageSelect.accessibleLabel", { lng: locale }),
+      blog: Astro.locals.t("header.blog", { lng: locale }),
+      download: Astro.locals.t("header.download", { lng: locale }),
+      tracker: Astro.locals.t("header.tracker", { lng: locale }),
+      trackerLabel: Astro.locals.t("header.trackerLabel", { lng: locale }),
+      noResults: Astro.locals.t("pagefind.zero_results", { lng: locale }),
+      devWarning: Astro.locals.t("header.devWarningText", { lng: locale }),
+    },
+  ]),
+);
 ---
 
 <header
   class="fixed top-0 left-0 right-0 z-50 px-2 pt-2 max-w-280 mx-auto"
-  transition:persist="main-navbar"
+  transition:name="main-navbar"
+  transition:persist
+  transition:animate="none"
   data-navbar-persist
+  data-navbar-copy={JSON.stringify(navbarCopy)}
 >
   <nav
     class="surface-smoked flex items-center gap-3 px-4 py-2.5 rounded-2xl backdrop-blur-md bg-white/80 dark:bg-teal-950/70 border border-teal-200/60 dark:border-white/10 shadow-xl"
@@ -247,51 +266,19 @@ const { showLanguageSwitcher = true } = Astro.props;
 </header>
 
 <script>
-  const navbarCopy = {
-    root: {
-      code: "EN",
-      search: "Search docs...",
-      language: "Select language",
-      blog: "Blog",
-      download: "Download",
-      tracker: "Tracker",
-      trackerLabel: "Implementation tracker",
-      noResults: "No results found.",
-      devWarning: "Search is only available in production builds",
-    },
-    de: {
-      code: "DE",
-      search: "Dokumentation durchsuchen...",
-      language: "Sprache auswählen",
-      blog: "Blog",
-      download: "Download",
-      tracker: "Status",
-      trackerLabel: "Implementierungs-Status",
-      noResults: "Keine Ergebnisse gefunden.",
-      devWarning: "Die Suche ist nur in produktiv verfügbar",
-    },
-    es: {
-      code: "ES",
-      search: "Buscar en la documentación...",
-      language: "Seleccionar idioma",
-      blog: "Blog",
-      download: "Descargar",
-      tracker: "Tracker",
-      trackerLabel: "Seguimiento de implementación",
-      noResults: "No se encontraron resultados.",
-      devWarning: "La búsqueda solo está disponible en producción",
-    },
-  } as const;
+  const navbar = document.querySelector<HTMLElement>("[data-navbar-persist]");
+  const navbarCopy = JSON.parse(navbar?.dataset.navbarCopy ?? "{}");
 
   function currentLocaleCode() {
     const language = document.documentElement.lang.toLowerCase();
-    return language.startsWith("de") ? "de" : language.startsWith("es") ? "es" : "root";
+    return language.startsWith("de") ? "de" : language.startsWith("es") ? "es" : "en";
   }
 
   function syncPersistentNavbarLocale() {
     const locale = currentLocaleCode();
-    const copy = navbarCopy[locale];
-    const prefix = locale === "root" ? "" : `/${locale}`;
+    const copy = navbarCopy[locale] ?? navbarCopy.en;
+    if (!copy) return;
+    const prefix = locale === "en" ? "" : `/${locale}`;
 
     const label = document.getElementById("lang-label");
     if (label) label.textContent = copy.code;
@@ -315,7 +302,7 @@ const { showLanguageSwitcher = true } = Astro.props;
       link.href = `${prefix}${link.dataset.localizedPath}`;
     });
 
-    const pathWithoutLocale = locale === "root"
+    const pathWithoutLocale = locale === "en"
       ? window.location.pathname
       : window.location.pathname.replace(new RegExp(`^/${locale}(/|$)`), "/");
     document.querySelectorAll<HTMLAnchorElement>("[data-language-option]").forEach((link) => {
@@ -326,7 +313,6 @@ const { showLanguageSwitcher = true } = Astro.props;
   }
 
   function initNavbar() {
-  const navbar = document.querySelector<HTMLElement>("[data-navbar-persist]");
   if (!navbar || navbar.dataset.initialized === "true") return;
   navbar.dataset.initialized = "true";
 

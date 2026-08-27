@@ -63,7 +63,45 @@ const socialImageUrl = new URL(renderedSocialImage.src, siteUrl);
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalUrl} />
-    <ClientRouter />
+    <script is:inline>
+      // Astro's router can produce a corrupted fallback frame in Firefox.
+      // Let Firefox use normal document navigation until its View Transitions
+      // implementation is reliable for this layout.
+      if (/Firefox\//.test(navigator.userAgent)) {
+        window.addEventListener(
+          "click",
+          (event) => {
+            if (
+              event.defaultPrevented ||
+              event.button !== 0 ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey
+            ) return;
+
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const link = target.closest("a[href]");
+            if (!link || link.target || link.hasAttribute("download")) return;
+
+            const destination = new URL(link.href, window.location.href);
+            if (
+              destination.origin !== window.location.origin ||
+              (destination.pathname === window.location.pathname &&
+                destination.search === window.location.search &&
+                destination.hash)
+            ) return;
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            window.location.assign(destination.href);
+          },
+          { capture: true },
+        );
+      }
+    </script>
+    <ClientRouter fallback="swap" />
 
     <meta property="og:type" content={pageType} />
     <meta property="og:site_name" content="SteelMC" />

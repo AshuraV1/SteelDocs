@@ -263,6 +263,15 @@ main {
   view-transition-name: main-content;
 }
 
+/* The navigation is a stable control, above the transitioning page content. */
+::view-transition-group(main-navbar) {
+  z-index: 2;
+}
+
+::view-transition-group(main-content) {
+  z-index: 1;
+}
+
 ::view-transition-old(main-content) {
   animation: slideUp-out 0.2s ease-in forwards;
 }
