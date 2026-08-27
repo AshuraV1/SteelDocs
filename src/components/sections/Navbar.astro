@@ -37,6 +37,7 @@ const { showLanguageSwitcher = true } = Astro.props;
       href={Astro.currentLocale
         ? getRelativeLocaleUrl(Astro.currentLocale, "/")
         : "/"}
+      data-localized-path="/"
       class="flex items-center gap-2 font-minecraft font-bold text-xl text-teal-950 dark:text-white shrink-0 mr-2"
       aria-label="SteelMC home"
     >
@@ -76,12 +77,14 @@ const { showLanguageSwitcher = true } = Astro.props;
         <div id="search-results-list"></div>
         <p
           id="search-no-results"
+          data-search-message="noResults"
           class="hidden px-4 py-3 text-sm text-teal-500 dark:text-white/50"
         >
           {Astro.locals.t("pagefind.zero_results")}
         </p>
         <p
           id="search-dev-warning"
+          data-search-message="devWarning"
           class="hidden px-4 py-3 text-sm text-teal-500 dark:text-white/50"
         >
           {t("header.devWarningText")}
@@ -97,31 +100,37 @@ const { showLanguageSwitcher = true } = Astro.props;
       <!-- Blog -->
       <a
         href={getRelativeLocaleUrl(Astro.currentLocale || "en", "/blog")}
+        data-localized-path="/blog/"
+        data-navbar-link="blog"
         class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-sm text-teal-600 dark:text-white/60 hover:text-teal-950 dark:hover:text-white hover:bg-teal-100 dark:hover:bg-white/10 transition-all"
         aria-label={t("header.blog")}
       >
         <Newspaper class="size-3.5 shrink-0" />
-        <span class="hidden font-minecraft lg:inline">{t("header.blog")}</span>
+        <span class="hidden font-minecraft lg:inline" data-navbar-label="blog">{t("header.blog")}</span>
       </a>
       <!-- Download -->
       <a
         href={getRelativeLocaleUrl(Astro.currentLocale || "en", "/download")}
+        data-localized-path="/download/"
+        data-navbar-link="download"
         class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-sm text-teal-600 dark:text-white/60 hover:text-teal-950 dark:hover:text-white hover:bg-teal-100 dark:hover:bg-white/10 transition-all"
         aria-label={t("header.download")}
       >
         <Download class="size-3.5 shrink-0" />
-        <span class="hidden font-minecraft sm:inline"
+        <span class="hidden font-minecraft sm:inline" data-navbar-label="download"
           >{t("header.download")}</span
         >
       </a>
       <!-- Tracker -->
       <a
         href={getRelativeLocaleUrl(Astro.currentLocale || "en", "/tracker")}
+        data-localized-path="/tracker/"
+        data-navbar-link="tracker"
         class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-sm text-teal-600 dark:text-white/60 hover:text-teal-950 dark:hover:text-white hover:bg-teal-100 dark:hover:bg-white/10 transition-all"
         aria-label={t("header.trackerLabel")}
       >
         <ChartNoAxesCombined class="size-3.5 shrink-0" />
-        <span class="hidden font-minecraft sm:inline"
+        <span class="hidden font-minecraft sm:inline" data-navbar-label="tracker"
           >{t("header.tracker")}</span
         >
       </a>
@@ -161,6 +170,7 @@ const { showLanguageSwitcher = true } = Astro.props;
                   return (
                     <a
                       href={getRelativeLocaleUrl(locale, pathWithoutLocale)}
+                      data-language-option={locale}
                       role="menuitem"
                       class:list={[
                         "flex font-minecraft items-center gap-2.5 px-3 py-2 text-sm text-teal-700 dark:text-white/70 hover:text-teal-950 dark:hover:text-white hover:bg-teal-50 dark:hover:bg-white/10 transition-colors",
@@ -237,6 +247,84 @@ const { showLanguageSwitcher = true } = Astro.props;
 </header>
 
 <script>
+  const navbarCopy = {
+    root: {
+      code: "EN",
+      search: "Search docs...",
+      language: "Select language",
+      blog: "Blog",
+      download: "Download",
+      tracker: "Tracker",
+      trackerLabel: "Implementation tracker",
+      noResults: "No results found.",
+      devWarning: "Search is only available in production builds",
+    },
+    de: {
+      code: "DE",
+      search: "Dokumentation durchsuchen...",
+      language: "Sprache auswählen",
+      blog: "Blog",
+      download: "Download",
+      tracker: "Status",
+      trackerLabel: "Implementierungs-Status",
+      noResults: "Keine Ergebnisse gefunden.",
+      devWarning: "Die Suche ist nur in produktiv verfügbar",
+    },
+    es: {
+      code: "ES",
+      search: "Buscar en la documentación...",
+      language: "Seleccionar idioma",
+      blog: "Blog",
+      download: "Descargar",
+      tracker: "Tracker",
+      trackerLabel: "Seguimiento de implementación",
+      noResults: "No se encontraron resultados.",
+      devWarning: "La búsqueda solo está disponible en producción",
+    },
+  } as const;
+
+  function currentLocaleCode() {
+    const language = document.documentElement.lang.toLowerCase();
+    return language.startsWith("de") ? "de" : language.startsWith("es") ? "es" : "root";
+  }
+
+  function syncPersistentNavbarLocale() {
+    const locale = currentLocaleCode();
+    const copy = navbarCopy[locale];
+    const prefix = locale === "root" ? "" : `/${locale}`;
+
+    const label = document.getElementById("lang-label");
+    if (label) label.textContent = copy.code;
+
+    const languageButton = document.getElementById("lang-btn");
+    languageButton?.setAttribute("aria-label", copy.language);
+
+    const searchInput = document.getElementById("navbar-search");
+    searchInput?.setAttribute("placeholder", copy.search);
+    document.querySelector<HTMLElement>("[data-search-message=\"noResults\"]")!.textContent = copy.noResults;
+    document.querySelector<HTMLElement>("[data-search-message=\"devWarning\"]")!.textContent = copy.devWarning;
+
+    (["blog", "download", "tracker"] as const).forEach((key) => {
+      const link = document.querySelector<HTMLElement>(`[data-navbar-link="${key}"]`);
+      const text = document.querySelector<HTMLElement>(`[data-navbar-label="${key}"]`);
+      if (text) text.textContent = copy[key];
+      if (link) link.setAttribute("aria-label", key === "tracker" ? copy.trackerLabel : copy[key]);
+    });
+
+    document.querySelectorAll<HTMLAnchorElement>("[data-localized-path]").forEach((link) => {
+      link.href = `${prefix}${link.dataset.localizedPath}`;
+    });
+
+    const pathWithoutLocale = locale === "root"
+      ? window.location.pathname
+      : window.location.pathname.replace(new RegExp(`^/${locale}(/|$)`), "/");
+    document.querySelectorAll<HTMLAnchorElement>("[data-language-option]").forEach((link) => {
+      const optionLocale = link.dataset.languageOption;
+      const isDefaultLocale = optionLocale === "root" || optionLocale === "en";
+      link.href = isDefaultLocale ? pathWithoutLocale : `/${optionLocale}${pathWithoutLocale}`;
+    });
+  }
+
   function initNavbar() {
   const navbar = document.querySelector<HTMLElement>("[data-navbar-persist]");
   if (!navbar || navbar.dataset.initialized === "true") return;
@@ -305,6 +393,7 @@ const { showLanguageSwitcher = true } = Astro.props;
   const searchDevWarning = document.getElementById("search-dev-warning");
 
   let pagefind: any = null;
+  let pagefindLoading: Promise<void> | null = null;
   let debounceTimer: ReturnType<typeof setTimeout>;
 
   const closeResults = () => searchResults?.classList.add("hidden");
@@ -319,9 +408,7 @@ const { showLanguageSwitcher = true } = Astro.props;
       showResults();
     });
   } else {
-    // Lazy-load pagefind on first interaction
-    let pagefindLoading: Promise<void> | null = null;
-
+    // Lazy-load the index for the active site language on first interaction.
     const loadPagefind = () => {
       if (pagefindLoading) return pagefindLoading;
       const bundlePath =
@@ -410,10 +497,21 @@ const { showLanguageSwitcher = true } = Astro.props;
       closeResults();
     }
   });
+
+  document.addEventListener("astro:before-swap", () => {
+    clearTimeout(debounceTimer);
+    void pagefind?.destroy?.();
+    pagefind = null;
+    pagefindLoading = null;
+    searchResultsList?.replaceChildren();
+    closeResults();
+  });
   }
 
   initNavbar();
+  syncPersistentNavbarLocale();
   document.addEventListener("astro:page-load", initNavbar);
+  document.addEventListener("astro:page-load", syncPersistentNavbarLocale);
 </script>
 
 <style>
